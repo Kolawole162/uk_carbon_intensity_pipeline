@@ -5,6 +5,14 @@ import pandas as pd
 
 FUELS = ["biomass", "coal", "imports", "gas", "nuclear", "other", "hydro", "solar", "wind"]
 
+def keep_day(data: list, day: date) -> list:
+    """Keep only the half-hour intervals that start on `day` (UTC).
+
+    The pt24h endpoint includes both ends of its 24-hour window, so it returns
+    49 intervals. One of them belongs to a neighbouring day and would be
+    counted twice across consecutive daily runs.
+    """
+    return [interval for interval in data if interval["from"][:10] == day.isoformat()]
 
 def flatten(data: list) -> list:
     """Turn nested API intervals into one flat record per region per half-hour."""

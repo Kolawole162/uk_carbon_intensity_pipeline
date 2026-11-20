@@ -1,6 +1,6 @@
 from datetime import date
 
-from carbon_etl.transform import aggregate_daily, flatten
+from carbon_etl.transform import aggregate_daily, flatten, keep_day
 
 
 def make_region(regionid, intensity, index, gas, wind):
@@ -49,3 +49,8 @@ def test_most_common_index_is_kept():
 def test_missing_fuels_are_filled_with_zero():
     daily = aggregate_daily(flatten(SAMPLE), target_date=date(2026, 11, 20))
     assert (daily["coal"] == 0).all()
+
+def test_keep_day_drops_intervals_from_other_days():
+    data = SAMPLE + [{"from": "2026-11-20T00:00Z", "regions": []}]
+    kept = keep_day(data, date(2026, 11, 19))
+    assert len(kept) == 2
