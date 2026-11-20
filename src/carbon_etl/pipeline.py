@@ -2,16 +2,15 @@
 
 Usage (from the repo root):  python -m carbon_etl.pipeline [YYYY-MM-DD]
 """
-"""Run the pipeline for one day.
-
-Usage (from the repo root):  python -m carbon_etl.pipeline [YYYY-MM-DD]
-"""
 import sys
 from datetime import date, timedelta
 from pathlib import Path
 
+from carbon_etl.db import get_engine
 from carbon_etl.extract import fetch_day
+from carbon_etl.load import load_day
 from carbon_etl.transform import aggregate_daily, flatten, keep_day
+
 
 def run(target_date: date):
     day = target_date - timedelta(days=1)
@@ -24,6 +23,8 @@ def run(target_date: date):
     out_file = out_dir / f"carbon_daily_{daily['date_recorded'].iloc[0]}.csv"
     daily.to_csv(out_file, index=False)
     print(f"Saved {len(daily)} regions to {out_file}")
+
+    load_day(daily, get_engine())
     return daily
 
 
