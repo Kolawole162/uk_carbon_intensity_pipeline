@@ -42,3 +42,5 @@ CREATE TABLE IF NOT EXISTS carbon.fact_generation_mix (
     wind     NUMERIC(5, 2),
     PRIMARY KEY (regionid, date_recorded)
 );
+
+SELECT date_recorded, COUNT(*) FROM carbon.fact_carbon_intensity GROUP BY date_recorded;
