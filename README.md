@@ -96,6 +96,8 @@ docker compose up -d --build airflow
 Open <http://localhost:8080>, switch on `uk_carbon_intensity_daily` and trigger a run.
 The local setup disables Airflow login for convenience; it is not intended for production.
 
+![Airflow DAG with successful runs](docs/airflow_dag_run.png)
+
 **Run locally without Docker** (needs a PostgreSQL database with `sql/schema.sql` applied):
 
 ```bash
