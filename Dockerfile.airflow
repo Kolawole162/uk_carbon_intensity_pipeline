@@ -1,0 +1,7 @@
+FROM apache/airflow:3.1.8
+
+# The pipeline gets its own virtual environment, so its packages
+# never clash with Airflow's own dependencies
+RUN python -m venv /home/airflow/pipeline-venv
+COPY requirements.txt /tmp/requirements.txt
+RUN /home/airflow/pipeline-venv/bin/pip install --no-cache-dir -r /tmp/requirements.txt
